@@ -5,6 +5,8 @@ import co.edu.udea.calidad.paquetrack.questions.NumberOfResults;
 import co.edu.udea.calidad.paquetrack.questions.ReportedShipmentTotals;
 import co.edu.udea.calidad.paquetrack.questions.ReportedState;
 import co.edu.udea.calidad.paquetrack.questions.ResponseStatusCode;
+import co.edu.udea.calidad.paquetrack.questions.ShipmentStatusChanges;
+import co.edu.udea.calidad.paquetrack.tasks.ConsultShipmentHistory;
 import co.edu.udea.calidad.paquetrack.tasks.CreateAShipment;
 import co.edu.udea.calidad.paquetrack.tasks.RequestShipmentReport;
 import co.edu.udea.calidad.paquetrack.tasks.RetrieveTheCreatedShipment;
@@ -19,6 +21,7 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 
@@ -118,6 +121,17 @@ public class ShipmentStepDefinitions {
         staff().should(seeThat("the located shipment tracking number",
                 AssignedTrackingNumber.ofTheShipment(),
                 matchesPattern(AssignedTrackingNumber.BUSINESS_FORMAT)));
+    }
+
+    @When("the operator consults the shipment status history")
+    public void theOperatorConsultsTheShipmentStatusHistory() {
+        staff().attemptsTo(ConsultShipmentHistory.ofTheShipment());
+    }
+
+    @Then("the shipment history records the change to {string}")
+    public void theShipmentHistoryRecordsTheChangeTo(String state) {
+        staff().should(seeThat("the recorded status changes",
+                ShipmentStatusChanges.recordedInTheHistory(), hasItem(state)));
     }
 
     @Then("at least one shipment is returned for that sender")
