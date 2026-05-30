@@ -9,6 +9,7 @@ import co.edu.udea.calidad.paquetrack.ui.utils.UiTestData;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
+import net.serenitybdd.screenplay.actions.Scroll;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 
 import java.time.LocalDateTime;
@@ -51,7 +52,8 @@ public class RegisterATrackingEventThroughTheUI implements Task {
                 EnterText.of(UiTestData.EVENT_LOCATION, TrackingPage.EVENT_LOCATION),
                 SetFieldValue.of(occurredAt, TrackingPage.EVENT_OCCURRED_AT),
                 ClickOn.the(TrackingPage.REGISTER_EVENT_BUTTON),
-                WaitUntil.the(TrackingPage.EVENT_SUCCESS, isVisible()).forNoMoreThan(TIMEOUT_SECONDS).seconds()
+                WaitUntil.the(TrackingPage.EVENT_SUCCESS, isVisible()).forNoMoreThan(TIMEOUT_SECONDS).seconds(),
+                Scroll.to(TrackingPage.EVENT_SUCCESS)
         );
     }
 }

@@ -7,6 +7,7 @@ import co.edu.udea.calidad.paquetrack.ui.utils.UiTestData;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
+import net.serenitybdd.screenplay.actions.Scroll;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
@@ -44,7 +45,9 @@ public class RegisterAShipmentThroughTheUI implements Task {
                 EnterText.of(UiTestData.RECIPIENT_CITY, ShipmentsPage.RECIPIENT_CITY),
                 EnterText.of(UiTestData.SHIPMENT_WEIGHT, ShipmentsPage.WEIGHT),
                 ClickOn.the(ShipmentsPage.CREATE_BUTTON),
-                WaitUntil.the(ShipmentsPage.CREATION_SUCCESS, isVisible()).forNoMoreThan(TIMEOUT_SECONDS).seconds()
+                WaitUntil.the(ShipmentsPage.CREATION_SUCCESS, isVisible()).forNoMoreThan(TIMEOUT_SECONDS).seconds(),
+                // Traer la confirmacion al area visible (evidencia visual inequivoca)
+                Scroll.to(ShipmentsPage.CREATION_SUCCESS)
         );
     }
 }
