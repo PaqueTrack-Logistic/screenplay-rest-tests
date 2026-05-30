@@ -21,4 +21,8 @@ public final class UiConfig {
     public static String loginUrl() {
         return baseUrl() + "/login";
     }
+
+    public static String registerUrl() {
+        return baseUrl() + "/register";
+    }
 }

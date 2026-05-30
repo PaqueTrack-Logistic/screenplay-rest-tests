@@ -1,8 +1,12 @@
 package co.edu.udea.calidad.paquetrack.ui.stepdefinitions;
 
 import co.edu.udea.calidad.paquetrack.ui.interactions.NavigateTo;
+import co.edu.udea.calidad.paquetrack.ui.questions.AccessError;
+import co.edu.udea.calidad.paquetrack.ui.questions.CurrentPageUrl;
 import co.edu.udea.calidad.paquetrack.ui.questions.SignedInUser;
 import co.edu.udea.calidad.paquetrack.ui.tasks.LogInToTheControlPanel;
+import co.edu.udea.calidad.paquetrack.ui.tasks.LogOut;
+import co.edu.udea.calidad.paquetrack.ui.tasks.SignIn;
 import co.edu.udea.calidad.paquetrack.ui.utils.UiConfig;
 import co.edu.udea.calidad.paquetrack.ui.utils.UiTestData;
 import io.cucumber.java.en.Given;
@@ -12,7 +16,10 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.emptyString;
 
 /**
  * Step Definitions UI del dominio de ACCESO: solo traducen Gherkin de negocio
@@ -35,8 +42,28 @@ public class UiAuthenticationStepDefinitions {
                 LogInToTheControlPanel.withCredentials(UiTestData.ADMIN_EMAIL, UiTestData.ADMIN_PASSWORD));
     }
 
+    @When("a person signs in with an incorrect password")
+    public void aPersonSignsInWithAnIncorrectPassword() {
+        staff().attemptsTo(SignIn.withCredentials(UiTestData.ADMIN_EMAIL, UiTestData.WRONG_PASSWORD));
+    }
+
+    @When("the user logs out")
+    public void theUserLogsOut() {
+        staff().attemptsTo(LogOut.now());
+    }
+
     @Then("the control panel shows the session for {string}")
     public void theControlPanelShowsTheSessionFor(String email) {
         staff().should(seeThat("the signed-in user shown in the panel", SignedInUser.email(), is(email)));
+    }
+
+    @Then("access is refused with a message on screen")
+    public void accessIsRefusedWithAMessage() {
+        staff().should(seeThat("the access error message", AccessError.message(), is(not(emptyString()))));
+    }
+
+    @Then("the platform returns to the login page")
+    public void thePlatformReturnsToTheLoginPage() {
+        staff().should(seeThat("the current page", CurrentPageUrl.displayed(), containsString("/login")));
     }
 }

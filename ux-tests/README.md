@@ -43,5 +43,8 @@ Reporte Serenity (con **capturas de pantalla** de cada paso): `ux-tests/target/s
 - **`utils/`** — `UiConfig` (URL del front, no quemada), `UiTestData`.
 - **`runners/` + `stepdefinitions/` + `features/`** — Gherkin en ingles, actor generico.
 
-## Escenarios
-- `authentication/login.feature` — un administrador inicia sesion por el panel web y llega a su espacio de trabajo.
+## Escenarios (4, en verde)
+- `authentication/login.feature` (3): un administrador inicia sesion por el panel web · el acceso es rechazado con la contrasena incorrecta · un usuario autenticado cierra sesion y vuelve al login.
+- `registration/registration.feature` (1): un nuevo solicitante pide acceso desde el formulario web y la plataforma confirma que queda pendiente de aprobacion.
+
+Pendiente (proximas fases): ver envios/tracking autenticado, administracion de usuarios (aprobar/rechazar) por UI.
