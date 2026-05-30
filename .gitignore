@@ -1,0 +1,15 @@
+# Gradle
+.gradle/
+build/
+
+# Serenity / Cucumber output
+target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+Thumbs.db
+.DS_Store
