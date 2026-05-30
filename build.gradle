@@ -1,0 +1,142 @@
+import com.github.spotbugs.snom.Effort
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.SpotBugsTask
+
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'net.serenity-bdd:serenity-gradle-plugin:4.3.2'
+    }
+}
+
+plugins {
+    // Scaffold del patrón Screenplay (profe) — genera la estructura del proyecto
+    id 'io.github.jumosqu12.screenplayarchitecture' version '2.0.1'
+    id 'java'
+    id 'idea'
+    // Calidad de codigo de la automatizacion (mantenibilidad / deteccion de bugs / cobertura)
+    id 'checkstyle'
+    id 'jacoco'
+    id 'com.github.spotbugs' version '6.0.26'
+}
+
+apply plugin: 'net.serenity-bdd.serenity-gradle-plugin'
+
+group 'co.edu.udea.calidad'
+version '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    serenityVersion = '4.1.0'
+    lombokVersion = '1.18.30'
+    junitVersion = '4.13.2'
+}
+
+dependencies {
+    implementation "net.serenity-bdd:serenity-core:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-screenplay:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-screenplay-rest:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-ensure:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-cucumber:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-junit:${serenityVersion}"
+    implementation 'org.slf4j:slf4j-simple:2.0.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
+
+    testImplementation "junit:junit:${junitVersion}"
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}
+
+tasks.named('test') {
+    useJUnit()
+    finalizedBy aggregate
+    // Propaga -D del shell al JVM de test (filtrar por tags, cambiar baseUrl/entorno)
+    systemProperties = System.properties.findAll { k, v ->
+        k.toString().startsWith('cucumber.') ||
+        k.toString().startsWith('serenity.') ||
+        k.toString().startsWith('restapi.') ||
+        k.toString().startsWith('environment')
+    }
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        showStandardStreams = false
+    }
+    // La cobertura mide que escenarios ejercitan los componentes Screenplay
+    finalizedBy jacocoTestReport
+}
+
+// --- JaCoCo: cobertura del framework de automatizacion (Tasks/Questions/Interactions) ---
+jacoco {
+    toolVersion = '0.8.12'
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+        xml.required = true
+    }
+    // Excluir las clases base del scaffold (marcadores de paquete, sin logica)
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                '**/tasks/Task.class',
+                '**/questions/Question.class',
+                '**/interactions/Interaction.class',
+                '**/models/Model.class',
+                '**/userinterfaces/UserInterface.class',
+                '**/utils/Util.class',
+                '**/integrations/Integration.class',
+                '**/exceptions/Exception.class'
+            ])
+        }))
+    }
+}
+
+// --- Checkstyle: convenciones y mantenibilidad (KISS) del codigo de pruebas ---
+checkstyle {
+    toolVersion = '10.18.2'
+    configFile = file("config/checkstyle/checkstyle.xml")
+    // Reglas de estilo: reportan pero no rompen la entrega de pruebas
+    ignoreFailures = false
+    maxWarnings = 0
+}
+
+// --- SpotBugs: deteccion de patrones de bug en los componentes Screenplay ---
+spotbugs {
+    toolVersion = '4.8.6'
+    effort = Effort.valueOf('MAX')
+    reportLevel = Confidence.valueOf('HIGH')
+    excludeFilter = file("config/spotbugs/exclude.xml")
+}
+
+tasks.withType(SpotBugsTask).configureEach {
+    reports {
+        html.required = true
+        xml.required = false
+    }
+}
+
+// Agrupa todas las verificaciones de calidad en un solo comando
+tasks.register('qualityGate') {
+    group = 'verification'
+    description = 'Ejecuta pruebas + cobertura + analisis estatico (Checkstyle, SpotBugs)'
+    dependsOn 'test', 'jacocoTestReport', 'checkstyleMain', 'checkstyleTest', 'spotbugsMain', 'spotbugsTest'
+}

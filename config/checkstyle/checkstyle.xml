@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<!--
+  Reglas de estilo para la automatizacion de pruebas PaqueTrack (Screenplay).
+  Enfoque: mantenibilidad y KISS (lo que exige el profe), sin reglas ruidosas
+  como MagicNumber (los codigos HTTP/tiempos de espera son legibles tal cual).
+-->
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="severity" value="error"/>
+    <property name="fileExtensions" value="java"/>
+
+    <!-- Sin tabuladores -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <!-- Longitud de linea razonable (los pasos de negocio son descriptivos) -->
+    <module name="LineLength">
+        <property name="max" value="140"/>
+        <property name="ignorePattern" value="^package.*|^import.*|@.*"/>
+    </module>
+
+    <module name="TreeWalker">
+        <!-- Imports limpios -->
+        <module name="AvoidStarImport"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports">
+            <property name="processJavadoc" value="true"/>
+        </module>
+
+        <!-- Convenciones de nombres -->
+        <module name="PackageName"/>
+        <module name="TypeName"/>
+        <module name="MethodName"/>
+        <module name="MemberName"/>
+        <module name="ParameterName"/>
+        <module name="LocalVariableName"/>
+        <module name="ConstantName"/>
+
+        <!-- Bloques y llaves -->
+        <module name="NeedBraces"/>
+        <module name="LeftCurly"/>
+        <module name="RightCurly"/>
+        <module name="EmptyBlock">
+            <property name="option" value="text"/>
+        </module>
+
+        <!-- Espaciado -->
+        <module name="WhitespaceAfter"/>
+        <module name="GenericWhitespace"/>
+        <module name="MethodParamPad"/>
+        <module name="NoWhitespaceBefore"/>
+
+        <!-- Buenas practicas -->
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
+        <module name="EmptyStatement"/>
+        <module name="OneStatementPerLine"/>
+        <module name="UpperEll"/>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="MissingOverride"/>
+        <module name="FallThrough"/>
+        <module name="DefaultComesLast"/>
+    </module>
+</module>
