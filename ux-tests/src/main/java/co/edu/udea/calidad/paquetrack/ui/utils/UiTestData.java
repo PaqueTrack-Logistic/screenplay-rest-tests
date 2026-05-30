@@ -23,4 +23,16 @@ public final class UiTestData {
     public static String uniqueEmail() {
         return "qa.ui." + System.currentTimeMillis() + "@logistics.com";
     }
+
+    // Datos por defecto del envio (no quemados en steps/tasks)
+    public static final String SHIPMENT_ADDRESS = "Calle 10 # 20-30";
+    public static final String SENDER_CITY = "Medellin";
+    public static final String RECIPIENT_CITY = "Bogota";
+    public static final String SHIPMENT_WEIGHT = "2.5";
+
+    // Rol a asignar al aprobar un solicitante desde la UI
+    public static final String OPERATOR_ROLE = "ROLE_OPERATOR";
+
+    // Ubicacion por defecto al reportar un evento de tracking
+    public static final String EVENT_LOCATION = "Centro logistico Medellin";
 }

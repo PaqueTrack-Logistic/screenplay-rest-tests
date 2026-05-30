@@ -36,6 +36,13 @@ public class UiAuthenticationStepDefinitions {
         staff().attemptsTo(NavigateTo.the(UiConfig.loginUrl()));
     }
 
+    @Given("an operator has signed in to PaqueTrack")
+    public void anOperatorHasSignedIn() {
+        staff().attemptsTo(
+                NavigateTo.the(UiConfig.loginUrl()),
+                LogInToTheControlPanel.withCredentials(UiTestData.ADMIN_EMAIL, UiTestData.ADMIN_PASSWORD));
+    }
+
     @When("the administrator signs in with valid corporate credentials")
     public void theAdministratorSignsInWithValidCredentials() {
         staff().attemptsTo(

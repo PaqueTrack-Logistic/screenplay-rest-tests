@@ -25,4 +25,16 @@ public final class UiConfig {
     public static String registerUrl() {
         return baseUrl() + "/register";
     }
+
+    public static String shipmentsUrl() {
+        return baseUrl() + "/shipments";
+    }
+
+    public static String trackingUrl() {
+        return baseUrl() + "/tracking";
+    }
+
+    public static String adminUsersUrl() {
+        return baseUrl() + "/admin/users";
+    }
 }

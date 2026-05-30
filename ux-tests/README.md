@@ -36,15 +36,16 @@ $env:JAVA_HOME="C:\Program Files\Java\jdk-17"
 Reporte Serenity (con **capturas de pantalla** de cada paso): `ux-tests/target/site/serenity/index.html`.
 
 ## Arquitectura (paquete `co.edu.udea.calidad.paquetrack.ui`)
-- **`userinterfaces/`** — Targets (localizadores) por pantalla: `LoginPage`, `ControlPanel`.
-- **`interactions/`** — la "menuda" propia: `NavigateTo`, `EnterText`, `ClickOn`.
-- **`tasks/`** — acciones de negocio: `LogInToTheControlPanel`.
-- **`questions/`** — validaciones: `SignedInUser`.
-- **`utils/`** — `UiConfig` (URL del front, no quemada), `UiTestData`.
-- **`runners/` + `stepdefinitions/` + `features/`** — Gherkin en ingles, actor generico.
+- **`userinterfaces/`** — Targets (localizadores) por pantalla: `LoginPage`, `ControlPanel`, `RegistrationPage`, `ShipmentsPage`, `TrackingPage`, `AdminUsersPage`.
+- **`interactions/`** — la "menuda" propia: `NavigateTo`, `EnterText`, `ClickOn`, `ChooseOption`, `SetFieldValue`.
+- **`tasks/`** — acciones de negocio: `SignIn`, `LogInToTheControlPanel`, `LogOut`, `RequestAccessThroughTheUI`, `RegisterAShipmentThroughTheUI`, `RegisterATrackingEventThroughTheUI`, `ApproveApplicantThroughTheUI`.
+- **`questions/`** — validaciones: `SignedInUser`, `AccessError`, `CurrentPageUrl`, `RegistrationOutcome`, `AssignedTrackingNumber`, `CreatedShipmentInternalId`, `TrackingEventOutcome`, `AdminActionOutcome`.
+- **`utils/`** — `UiConfig` (URLs del front, no quemadas), `UiTestData` (datos, unicos por corrida).
+- **`runners/` + `stepdefinitions/` + `features/`** — Gherkin en ingles, actor generico, por capability.
 
-## Escenarios (4, en verde)
-- `authentication/login.feature` (3): un administrador inicia sesion por el panel web · el acceso es rechazado con la contrasena incorrecta · un usuario autenticado cierra sesion y vuelve al login.
-- `registration/registration.feature` (1): un nuevo solicitante pide acceso desde el formulario web y la plataforma confirma que queda pendiente de aprobacion.
-
-Pendiente (proximas fases): ver envios/tracking autenticado, administracion de usuarios (aprobar/rechazar) por UI.
+## Escenarios (7, en verde) — viajes de usuario en el navegador
+- `authentication/login.feature` (3): inicio de sesion del administrador · acceso rechazado con contrasena incorrecta · cierre de sesion y regreso al login.
+- `registration/registration.feature` (1): un nuevo solicitante pide acceso desde el formulario y la plataforma confirma que queda pendiente de aprobacion.
+- `shipments/shipments.feature` (1): un operador registra un envio desde el formulario web y obtiene su numero de guia (PQ-...).
+- `administration/administration.feature` (1) — RBAC visual: un administrador revisa y **aprueba** a un solicitante recien registrado desde el panel.
+- `tracking/tracking.feature` (1) — E2E: un operador crea un envio y **reporta un evento de tracking** para el desde la web.
