@@ -123,5 +123,5 @@ tasks.withType(SpotBugsTask).configureEach {
 tasks.register('qualityGate') {
     group = 'verification'
     description = 'Ejecuta pruebas + cobertura + analisis estatico (Checkstyle, SpotBugs)'
-    dependsOn 'test', 'jacocoTestReport', 'checkstyleMain', 'checkstyleTest', 'spotbugsMain'
+    dependsOn 'test', 'jacocoTestReport', 'checkstyleMain', 'checkstyleTest', 'spotbugsMain', 'spotbugsTest'
 }
