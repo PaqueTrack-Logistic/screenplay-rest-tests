@@ -7,6 +7,7 @@ import co.edu.udea.calidad.paquetrack.questions.ResponseStatusCode;
 import co.edu.udea.calidad.paquetrack.tasks.Authenticate;
 import co.edu.udea.calidad.paquetrack.tasks.AuthenticateAsTheRegisteredUser;
 import co.edu.udea.calidad.paquetrack.tasks.RegisterANewUser;
+import co.edu.udea.calidad.paquetrack.tasks.RenewSession;
 import co.edu.udea.calidad.paquetrack.tasks.ResumeSession;
 import co.edu.udea.calidad.paquetrack.utils.TestData;
 import co.edu.udea.calidad.paquetrack.utils.UniqueData;
@@ -79,6 +80,11 @@ public class AccessStepDefinitions {
         staff().attemptsTo(AuthenticateAsTheRegisteredUser.now());
     }
 
+    @When("the user renews the session")
+    public void theUserRenewsTheSession() {
+        staff().attemptsTo(RenewSession.now());
+    }
+
     // --- Reglas de negocio (validaciones via Questions) ---
 
     @Then("the platform grants access including the role {string}")
@@ -102,6 +108,12 @@ public class AccessStepDefinitions {
     public void accessIsDeniedBecauseCredentialsInvalid() {
         staff().should(seeThat("the reason access was denied",
                 RejectionReason.reportedByThePlatform(), is(TestData.REASON_INVALID_CREDENTIALS)));
+    }
+
+    @Then("access is denied because the registration was rejected")
+    public void accessIsDeniedBecauseRegistrationRejected() {
+        staff().should(seeThat("the reason access was denied",
+                RejectionReason.reportedByThePlatform(), is(TestData.REASON_REGISTRATION_REJECTED)));
     }
 
     @Then("the registration is accepted and the account is left awaiting approval")

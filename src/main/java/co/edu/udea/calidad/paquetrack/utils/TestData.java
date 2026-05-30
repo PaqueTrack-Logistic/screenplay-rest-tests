@@ -36,6 +36,7 @@ public final class TestData {
     // Codigos de negocio que explican por que la plataforma niega el acceso
     public static final String REASON_PENDING_APPROVAL = "AUTH_PENDING_APPROVAL";
     public static final String REASON_INVALID_CREDENTIALS = "AUTH_INVALID_CREDENTIALS";
+    public static final String REASON_REGISTRATION_REJECTED = "AUTH_REGISTRATION_REJECTED";
 
     // Rango de fechas del reporte gerencial (anio en curso)
     public static final String REPORT_FROM = "2026-01-01";

@@ -10,6 +10,9 @@ target/
 *.iml
 .vscode/
 
+# Config local del entorno (la plantilla .env.example si se versiona)
+.env
+
 # OS
 Thumbs.db
 .DS_Store

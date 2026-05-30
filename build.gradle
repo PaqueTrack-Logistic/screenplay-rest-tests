@@ -93,6 +93,21 @@ jacocoTestReport {
         html.required = true
         xml.required = true
     }
+    // Excluir las clases base del scaffold (marcadores de paquete, sin logica)
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                '**/tasks/Task.class',
+                '**/questions/Question.class',
+                '**/interactions/Interaction.class',
+                '**/models/Model.class',
+                '**/userinterfaces/UserInterface.class',
+                '**/utils/Util.class',
+                '**/integrations/Integration.class',
+                '**/exceptions/Exception.class'
+            ])
+        }))
+    }
 }
 
 // --- Checkstyle: convenciones y mantenibilidad (KISS) del codigo de pruebas ---

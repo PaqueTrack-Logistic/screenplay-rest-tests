@@ -1,8 +1,10 @@
 package co.edu.udea.calidad.paquetrack.stepdefinitions;
 
 import co.edu.udea.calidad.paquetrack.questions.NumberOfResults;
+import co.edu.udea.calidad.paquetrack.questions.RecordedMilestones;
 import co.edu.udea.calidad.paquetrack.questions.ResponseStatusCode;
 import co.edu.udea.calidad.paquetrack.tasks.ConsultEventTypes;
+import co.edu.udea.calidad.paquetrack.tasks.ConsultTrackingHistory;
 import co.edu.udea.calidad.paquetrack.tasks.RegisterATrackingEvent;
 import co.edu.udea.calidad.paquetrack.utils.TestData;
 import io.cucumber.java.en.Then;
@@ -12,6 +14,7 @@ import net.serenitybdd.screenplay.actors.OnStage;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 
 /**
@@ -34,6 +37,11 @@ public class TrackingStepDefinitions {
         staff().attemptsTo(RegisterATrackingEvent.ofType(eventType));
     }
 
+    @When("the operator consults the tracking history of the shipment")
+    public void theOperatorConsultsTheTrackingHistory() {
+        staff().attemptsTo(ConsultTrackingHistory.ofTheShipment());
+    }
+
     @Then("the catalog lists the supported tracking events")
     public void theCatalogListsTheSupportedEvents() {
         staff().should(seeThat("number of supported tracking events",
@@ -44,5 +52,11 @@ public class TrackingStepDefinitions {
     public void theTrackingEventIsRejected() {
         staff().should(seeThat("the tracking event was rejected",
                 ResponseStatusCode.value(), is(400)));
+    }
+
+    @Then("the tracking history records at least one milestone")
+    public void theTrackingHistoryRecordsMilestones() {
+        staff().should(seeThat("milestones recorded in the tracking history",
+                RecordedMilestones.inTheTrackingHistory(), greaterThanOrEqualTo(1)));
     }
 }

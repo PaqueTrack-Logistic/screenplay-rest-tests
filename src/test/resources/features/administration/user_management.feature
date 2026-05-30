@@ -19,6 +19,13 @@ Feature: Administration of platform access
     And the approved applicant signs in
     Then the platform grants access including the role "ROLE_OPERATOR"
 
+  Scenario: A rejected applicant can no longer sign in
+    Given an administrator is signed in to PaqueTrack
+    And a new applicant has requested access to the platform
+    When the administrator rejects the applicant
+    And the applicant tries to sign in
+    Then access is denied because the registration was rejected
+
   Scenario: Reviewing applicants requires an authenticated session
     When an unauthenticated visitor tries to review the registrations awaiting approval
     Then the operation is rejected because authentication is required
@@ -30,3 +37,13 @@ Feature: Administration of platform access
     And the approved applicant signs in
     When the operator tries to review the registrations awaiting approval
     Then the operation is forbidden for the operator role
+
+  Scenario: An administrator consults the roles that can be assigned
+    Given an administrator is signed in to PaqueTrack
+    When the administrator consults the assignable roles
+    Then the assignable roles include "ROLE_OPERATOR"
+
+  Scenario: An administrator obtains the breakdown of users by role
+    Given an administrator is signed in to PaqueTrack
+    When the administrator consults the user statistics by role
+    Then the statistics break down the users by role

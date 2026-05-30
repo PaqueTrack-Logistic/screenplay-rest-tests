@@ -15,3 +15,10 @@ Feature: Tracking events
     Given a shipment has been registered from "Logistica Pacifico"
     When the operator reports an unsupported "TELEPORTED" tracking event
     Then the tracking event is rejected as unsupported
+
+  Scenario: The tracking history records every reported milestone
+    Given a shipment has been registered from "Transportes Andinos"
+    When the courier reports the "DISPATCHED" event for the shipment
+    Then the delivery state eventually becomes "IN_TRANSIT"
+    When the operator consults the tracking history of the shipment
+    Then the tracking history records at least one milestone

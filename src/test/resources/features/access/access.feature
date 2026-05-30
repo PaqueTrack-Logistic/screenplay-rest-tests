@@ -25,6 +25,11 @@ Feature: Access to the PaqueTrack platform
     When a person signs in with a valid corporate email but the wrong password
     Then access is denied because the credentials are invalid
 
+  Scenario: A signed-in user renews the session without re-entering credentials
+    When the administrator signs in with the corporate account
+    And the user renews the session
+    Then the platform grants access including the role "ROLE_ADMIN"
+
   # Boundary value analysis on the registration password-length policy
   # (minimum required length is 8 characters).
   @boundary
