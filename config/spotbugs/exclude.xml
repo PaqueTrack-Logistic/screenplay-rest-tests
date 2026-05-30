@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Filtro de exclusiones de SpotBugs para la automatizacion PaqueTrack.
+  Solo se excluyen patrones que no aplican a codigo de pruebas Screenplay.
+-->
+<FindBugsFilter>
+    <!-- Los modelos generados por Lombok (@Builder/@Getter) no exponen estado mutable real -->
+    <Match>
+        <Class name="~.*\.models\..*"/>
+    </Match>
+
+    <!-- Las Tasks/Interactions/Questions usan rest-assured cuyo estilo fluido
+         SpotBugs malinterpreta como retorno ignorado; no es un bug. -->
+    <Match>
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+    </Match>
+</FindBugsFilter>
