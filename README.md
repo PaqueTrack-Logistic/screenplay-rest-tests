@@ -57,12 +57,12 @@ La automatización se trata como software de producción: se verifica con un *qu
 .\gradlew qualityGate     # test + jacocoTestReport + checkstyle + spotbugs
 ```
 
-## Escenarios cubiertos (28, todos en verde) — enfoque en reglas de negocio
-Las features están escritas como **criterios de aceptación del negocio** (qué garantiza la plataforma), no como aserciones técnicas de "status code". Cubren **17/18 endpoints** del gateway (se excluye solo el historial de envío, redundante con el historial de tracking).
+## Escenarios cubiertos (29, todos en verde) — enfoque en reglas de negocio
+Las features están escritas como **criterios de aceptación del negocio** (qué garantiza la plataforma), no como aserciones técnicas de "status code". Cubren **18/18 endpoints** del gateway (cobertura total).
 
 - **access.feature (8):** un administrador obtiene privilegios de administración · un solicitante queda **pendiente de aprobación** · *regla clave:* **un solicitante no puede operar hasta ser aprobado** (`AUTH_PENDING_APPROVAL`) · acceso negado por credenciales inválidas (`AUTH_INVALID_CREDENTIALS`) · **renovación de sesión** con refresh token sin reingresar credenciales · **valor límite** de longitud mínima de contraseña (7 → rechazada, 8 → aceptada).
 - **user_management.feature (7) — RBAC:** revisar pendientes · **aprobar** solicitante como operador → obtiene rol · **rechazar** solicitante → ya no puede entrar (`AUTH_REGISTRATION_REJECTED`) · revisar pendientes **exige sesión** (anónimo → rechazado) · **operador no puede** administrar (403) · consultar roles asignables · consolidado de usuarios por rol.
-- **shipments.feature (9):** registrar envío con **guía única** (`PQ-AAAAMMDD-XXXXXX`) que nace en `CREATED` · localizar por guía / por id · buscar por remitente / destinatario · la búsqueda exige **exactamente un criterio** (ambos / ninguno → inválida) · reporte gerencial por estado · reporte con rango invertido → rechazado.
+- **shipments.feature (10):** registrar envío con **guía única** (`PQ-AAAAMMDD-XXXXXX`) que nace en `CREATED` · localizar por guía / por id · buscar por remitente / destinatario · la búsqueda exige **exactamente un criterio** (ambos / ninguno → inválida) · reporte gerencial por estado · reporte con rango invertido → rechazado · el **historial del envío** registra su progresión de estados (async).
 - **tracking.feature (3):** la plataforma **publica el catálogo** de eventos · un evento **no soportado** es rechazado · el **historial de seguimiento** registra los hitos reportados.
 - **delivery_lifecycle.feature (1) — E2E:** un envío recorre **todo su ciclo de vida** a medida que el courier reporta hitos: `CREATED → IN_TRANSIT → OUT_FOR_DELIVERY → DELIVERED` (propagación **asíncrona** vía RabbitMQ, con espera acotada hasta el estado esperado).
 

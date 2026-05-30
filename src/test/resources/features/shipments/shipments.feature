@@ -49,3 +49,10 @@ Feature: Shipment registration and consultation
   Scenario: The report is refused when the date range is inverted
     When the supervisor requests the shipments report from "2026-12-31" to "2026-01-01"
     Then the report request is rejected as an invalid date range
+
+  Scenario: The shipment status history records its progression
+    Given a shipment has been registered from "Auditoria Andina"
+    When the courier reports the "DISPATCHED" event for the shipment
+    Then the delivery state eventually becomes "IN_TRANSIT"
+    When the operator consults the shipment status history
+    Then the shipment history records the change to "IN_TRANSIT"
