@@ -6,6 +6,7 @@ import co.edu.udea.calidad.paquetrack.ui.questions.CurrentPageUrl;
 import co.edu.udea.calidad.paquetrack.ui.questions.SignedInUser;
 import co.edu.udea.calidad.paquetrack.ui.tasks.LogInToTheControlPanel;
 import co.edu.udea.calidad.paquetrack.ui.tasks.LogOut;
+import co.edu.udea.calidad.paquetrack.ui.tasks.RequestAccessThroughTheUI;
 import co.edu.udea.calidad.paquetrack.ui.tasks.SignIn;
 import co.edu.udea.calidad.paquetrack.ui.utils.UiConfig;
 import co.edu.udea.calidad.paquetrack.ui.utils.UiTestData;
@@ -26,6 +27,8 @@ import static org.hamcrest.Matchers.emptyString;
  * a Tasks/Questions; sin logica ni datos quemados.
  */
 public class UiAuthenticationStepDefinitions {
+
+    private static final String PENDING_EMAIL = "pendingApplicantEmail";
 
     private Actor staff() {
         return OnStage.theActorCalled(UiTestData.ACTOR);
@@ -52,6 +55,22 @@ public class UiAuthenticationStepDefinitions {
     @When("a person signs in with an incorrect password")
     public void aPersonSignsInWithAnIncorrectPassword() {
         staff().attemptsTo(SignIn.withCredentials(UiTestData.ADMIN_EMAIL, UiTestData.WRONG_PASSWORD));
+    }
+
+    @Given("a new applicant has just requested access from the web")
+    public void aNewApplicantHasJustRequestedAccess() {
+        String email = UiTestData.uniqueEmail();
+        staff().remember(PENDING_EMAIL, email);
+        staff().attemptsTo(
+                NavigateTo.the(UiConfig.registerUrl()),
+                RequestAccessThroughTheUI.withCredentials(email, UiTestData.NEW_USER_PASSWORD));
+    }
+
+    @When("that applicant tries to sign in")
+    public void thatApplicantTriesToSignIn() {
+        staff().attemptsTo(
+                NavigateTo.the(UiConfig.loginUrl()),
+                SignIn.withCredentials(staff().recall(PENDING_EMAIL), UiTestData.NEW_USER_PASSWORD));
     }
 
     @When("the user logs out")

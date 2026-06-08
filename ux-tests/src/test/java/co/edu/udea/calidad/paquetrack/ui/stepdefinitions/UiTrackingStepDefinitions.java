@@ -2,7 +2,9 @@ package co.edu.udea.calidad.paquetrack.ui.stepdefinitions;
 
 import co.edu.udea.calidad.paquetrack.ui.interactions.NavigateTo;
 import co.edu.udea.calidad.paquetrack.ui.questions.CreatedShipmentInternalId;
+import co.edu.udea.calidad.paquetrack.ui.questions.EmptyTrackingHistory;
 import co.edu.udea.calidad.paquetrack.ui.questions.TrackingEventOutcome;
+import co.edu.udea.calidad.paquetrack.ui.tasks.LookUpShipmentHistory;
 import co.edu.udea.calidad.paquetrack.ui.tasks.RegisterAShipmentThroughTheUI;
 import co.edu.udea.calidad.paquetrack.ui.tasks.RegisterATrackingEventThroughTheUI;
 import co.edu.udea.calidad.paquetrack.ui.utils.UiConfig;
@@ -44,5 +46,18 @@ public class UiTrackingStepDefinitions {
     public void thePlatformConfirmsTheTrackingEventWasRegistered() {
         staff().should(seeThat("the tracking event confirmation",
                 TrackingEventOutcome.message(), containsString("registrado")));
+    }
+
+    @When("the operator looks up the tracking history of an unknown shipment id")
+    public void theOperatorLooksUpAnUnknownShipmentHistory() {
+        staff().attemptsTo(
+                NavigateTo.the(UiConfig.trackingUrl()),
+                LookUpShipmentHistory.of(UiTestData.unknownShipmentId()));
+    }
+
+    @Then("the platform reports there are no tracking events for it")
+    public void thePlatformReportsThereAreNoTrackingEvents() {
+        staff().should(seeThat("the empty history message",
+                EmptyTrackingHistory.message(), containsString("Sin eventos")));
     }
 }

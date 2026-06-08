@@ -3,6 +3,7 @@ package co.edu.udea.calidad.paquetrack.ui.stepdefinitions;
 import co.edu.udea.calidad.paquetrack.ui.interactions.NavigateTo;
 import co.edu.udea.calidad.paquetrack.ui.questions.AdminActionOutcome;
 import co.edu.udea.calidad.paquetrack.ui.tasks.ApproveApplicantThroughTheUI;
+import co.edu.udea.calidad.paquetrack.ui.tasks.RejectApplicantThroughTheUI;
 import co.edu.udea.calidad.paquetrack.ui.tasks.RequestAccessThroughTheUI;
 import co.edu.udea.calidad.paquetrack.ui.utils.UiConfig;
 import co.edu.udea.calidad.paquetrack.ui.utils.UiTestData;
@@ -49,5 +50,15 @@ public class UiAdministrationStepDefinitions {
     @Then("the platform confirms the applicant was approved")
     public void thePlatformConfirmsTheApplicantWasApproved() {
         staff().should(seeThat("the approval confirmation", AdminActionOutcome.message(), containsString("aprobado")));
+    }
+
+    @When("the administrator rejects that applicant")
+    public void theAdministratorRejectsThatApplicant() {
+        staff().attemptsTo(RejectApplicantThroughTheUI.forApplicant(staff().recall(APPLICANT_EMAIL)));
+    }
+
+    @Then("the platform confirms the applicant was rejected")
+    public void thePlatformConfirmsTheApplicantWasRejected() {
+        staff().should(seeThat("the rejection confirmation", AdminActionOutcome.message(), containsString("rechaz")));
     }
 }
