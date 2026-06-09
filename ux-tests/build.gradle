@@ -50,13 +50,19 @@ dependencies {
 tasks.named('test') {
     useJUnit()
     finalizedBy aggregate
-    // Propaga -D del shell (tags, URL del front, headless on/off)
+    // Propaga -D del shell (tags, URL del front, headless on/off, switches de Chrome)
     systemProperties = System.properties.findAll { k, v ->
         k.toString().startsWith('cucumber.') ||
         k.toString().startsWith('serenity.') ||
         k.toString().startsWith('webdriver.') ||
         k.toString().startsWith('headless.') ||
+        k.toString().startsWith('chrome.') ||
         k.toString().startsWith('ui.')
+    }
+    // Reenvia tambien CHROME_SWITCHES del entorno como -Dchrome.switches (elegir monitor,
+    // tamano, etc. por maquina sin tocar el repo). El -D explicito tiene prioridad.
+    if (System.getenv('CHROME_SWITCHES') && !System.getProperty('chrome.switches')) {
+        systemProperties['chrome.switches'] = System.getenv('CHROME_SWITCHES')
     }
     testLogging {
         events 'passed', 'skipped', 'failed'
