@@ -2,6 +2,7 @@ package co.edu.udea.calidad.paquetrack.ui.tasks;
 
 import co.edu.udea.calidad.paquetrack.ui.interactions.ClickOn;
 import co.edu.udea.calidad.paquetrack.ui.interactions.EnterText;
+import co.edu.udea.calidad.paquetrack.ui.interactions.Pause;
 import co.edu.udea.calidad.paquetrack.ui.userinterfaces.ShipmentsPage;
 import co.edu.udea.calidad.paquetrack.ui.utils.UiTestData;
 import net.serenitybdd.annotations.Step;
@@ -44,6 +45,7 @@ public class RegisterAShipmentThroughTheUI implements Task {
                 EnterText.of(UiTestData.SHIPMENT_ADDRESS, ShipmentsPage.RECIPIENT_ADDRESS),
                 EnterText.of(UiTestData.RECIPIENT_CITY, ShipmentsPage.RECIPIENT_CITY),
                 EnterText.of(UiTestData.SHIPMENT_WEIGHT, ShipmentsPage.WEIGHT),
+                Pause.toObserve(),                   // demo: ver el formulario diligenciado (configurable por UI_DELAY_MS)
                 ClickOn.the(ShipmentsPage.CREATE_BUTTON),
                 WaitUntil.the(ShipmentsPage.CREATION_SUCCESS, isVisible()).forNoMoreThan(TIMEOUT_SECONDS).seconds(),
                 // Traer la confirmacion al area visible (evidencia visual inequivoca)

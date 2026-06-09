@@ -12,3 +12,7 @@ Feature: Tracking events (web)
     Given the operator has just registered a shipment from "Transportes Andinos" to "Cliente Final"
     When the operator reports a "DISPATCHED" tracking event for that shipment
     Then the platform confirms the tracking event was registered
+
+  Scenario: The tracking history of an unknown shipment shows no events
+    When the operator looks up the tracking history of an unknown shipment id
+    Then the platform reports there are no tracking events for it

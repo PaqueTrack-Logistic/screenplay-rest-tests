@@ -20,3 +20,8 @@ Feature: Access to the PaqueTrack control panel (web)
     When the administrator signs in with valid corporate credentials
     And the user logs out
     Then the platform returns to the login page
+
+  Scenario: A pending applicant cannot sign in before approval
+    Given a new applicant has just requested access from the web
+    When that applicant tries to sign in
+    Then access is refused with a message on screen

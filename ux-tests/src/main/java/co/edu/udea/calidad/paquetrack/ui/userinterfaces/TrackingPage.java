@@ -22,6 +22,14 @@ public class TrackingPage {
     public static final Target EVENT_SUCCESS =
             Target.the("event registration result").located(By.cssSelector(".alert-success"));
 
+    // Consulta del historial de un envio por su id interno (tarjeta "Ver historial")
+    public static final Target HISTORY_SHIPMENT_ID =
+            Target.the("history shipment id field").located(By.cssSelector("#history-input"));
+    public static final Target VIEW_HISTORY_BUTTON =
+            Target.the("view history button").located(By.xpath("//button[contains(.,'Ver historial')]"));
+    public static final Target HISTORY_EMPTY_MESSAGE = Target.the("empty history message").located(By.xpath(
+            "//input[@id='history-input']/ancestor::div[contains(@class,'card-body')]//p[contains(.,'Sin eventos')]"));
+
     private TrackingPage() {
     }
 }

@@ -2,6 +2,7 @@ package co.edu.udea.calidad.paquetrack.ui.tasks;
 
 import co.edu.udea.calidad.paquetrack.ui.interactions.ClickOn;
 import co.edu.udea.calidad.paquetrack.ui.interactions.EnterText;
+import co.edu.udea.calidad.paquetrack.ui.interactions.Pause;
 import co.edu.udea.calidad.paquetrack.ui.userinterfaces.LoginPage;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
@@ -33,6 +34,7 @@ public class SignIn implements Task {
         actor.attemptsTo(
                 EnterText.of(email, LoginPage.EMAIL_FIELD),
                 EnterText.of(password, LoginPage.PASSWORD_FIELD),
+                Pause.toObserve(),                   // demo: ver el formulario diligenciado (configurable por UI_DELAY_MS)
                 ClickOn.the(LoginPage.SIGN_IN_BUTTON)
         );
     }

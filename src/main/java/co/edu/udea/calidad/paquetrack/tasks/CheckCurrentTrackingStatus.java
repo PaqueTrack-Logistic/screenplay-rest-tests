@@ -20,9 +20,10 @@ import static net.serenitybdd.screenplay.Tasks.instrumented;
 public class CheckCurrentTrackingStatus implements Task {
 
     // Ventana de espera acotada para la consistencia eventual (RabbitMQ).
-    // 40 intentos x 750 ms = 30 s: holgado para el "cold start" del consumidor
-    // tras periodos de inactividad; en caliente retorna en el primer intento.
-    private static final int MAX_ATTEMPTS = 40;
+    // 80 intentos x 750 ms = 60 s: margen amplio para el "cold start" del consumidor
+    // tras periodos de inactividad (arranque en frio del stack); en caliente retorna
+    // en el primer intento, asi que no penaliza la corrida normal.
+    private static final int MAX_ATTEMPTS = 80;
     private static final long DELAY_MS = 750L;
 
     private final String expectedStatus; // null => solo esperar a que exista (200)

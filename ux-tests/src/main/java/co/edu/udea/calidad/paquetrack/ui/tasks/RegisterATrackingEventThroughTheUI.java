@@ -3,6 +3,7 @@ package co.edu.udea.calidad.paquetrack.ui.tasks;
 import co.edu.udea.calidad.paquetrack.ui.interactions.ChooseOption;
 import co.edu.udea.calidad.paquetrack.ui.interactions.ClickOn;
 import co.edu.udea.calidad.paquetrack.ui.interactions.EnterText;
+import co.edu.udea.calidad.paquetrack.ui.interactions.Pause;
 import co.edu.udea.calidad.paquetrack.ui.interactions.SetFieldValue;
 import co.edu.udea.calidad.paquetrack.ui.userinterfaces.TrackingPage;
 import co.edu.udea.calidad.paquetrack.ui.utils.UiTestData;
@@ -51,6 +52,7 @@ public class RegisterATrackingEventThroughTheUI implements Task {
                 ChooseOption.value(eventType, TrackingPage.EVENT_TYPE),
                 EnterText.of(UiTestData.EVENT_LOCATION, TrackingPage.EVENT_LOCATION),
                 SetFieldValue.of(occurredAt, TrackingPage.EVENT_OCCURRED_AT),
+                Pause.toObserve(),                   // demo: ver el formulario diligenciado (configurable por UI_DELAY_MS)
                 ClickOn.the(TrackingPage.REGISTER_EVENT_BUTTON),
                 WaitUntil.the(TrackingPage.EVENT_SUCCESS, isVisible()).forNoMoreThan(TIMEOUT_SECONDS).seconds(),
                 Scroll.to(TrackingPage.EVENT_SUCCESS)

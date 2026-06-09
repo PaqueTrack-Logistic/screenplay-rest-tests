@@ -18,6 +18,8 @@ public class RegistrationPage {
             Target.the("request access button").located(By.cssSelector("button[type='submit']"));
     public static final Target SUCCESS_ALERT =
             Target.the("success message").located(By.cssSelector(".alert-success"));
+    public static final Target ERROR_ALERT =
+            Target.the("validation error message").located(By.cssSelector(".alert-error"));
 
     private RegistrationPage() {
     }

@@ -32,6 +32,16 @@ public class ShipmentsPage {
     public static final Target INTERNAL_ID =
             Target.the("internal shipment id").located(By.cssSelector("small.code-chip"));
 
+    // Buscador de un envio por su numero de guia (tarjeta "Buscar envio")
+    public static final Target SEARCH_TRACKING_FIELD =
+            Target.the("search by tracking field").located(By.cssSelector("#search-tracking"));
+    public static final Target SEARCH_BUTTON = Target.the("search shipment button")
+            .located(By.xpath("//input[@id='search-tracking']/ancestor::form//button[@type='submit']"));
+    public static final Target SHIPMENT_DETAIL =
+            Target.the("shipment detail panel").located(By.cssSelector(".shipment-detail"));
+    public static final Target DETAIL_TRACKING_NUMBER =
+            Target.the("tracking number in the detail").located(By.cssSelector(".shipment-detail code.code-chip"));
+
     private ShipmentsPage() {
     }
 }

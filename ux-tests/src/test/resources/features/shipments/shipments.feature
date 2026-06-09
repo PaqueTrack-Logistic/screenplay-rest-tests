@@ -12,3 +12,8 @@ Feature: Shipment registration (web)
   Scenario: An operator registers a shipment from the web form
     When the operator registers a shipment from "Comercializadora Andina" to "Cliente Final"
     Then the shipment is registered with a tracking number
+
+  Scenario: An operator finds a registered shipment by its tracking number
+    Given the operator has registered a shipment from "Comercializadora Andina" to "Cliente Final"
+    When the operator searches for that shipment by its tracking number
+    Then the shipment detail is shown for that tracking number

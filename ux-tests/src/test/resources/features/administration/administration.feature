@@ -12,3 +12,7 @@ Feature: User administration (web)
   Scenario: An administrator approves a new applicant from the web panel
     When the administrator approves that applicant
     Then the platform confirms the applicant was approved
+
+  Scenario: An administrator rejects a new applicant from the web panel
+    When the administrator rejects that applicant
+    Then the platform confirms the applicant was rejected

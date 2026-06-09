@@ -1,5 +1,7 @@
 package co.edu.udea.calidad.paquetrack.ui.utils;
 
+import java.util.UUID;
+
 /**
  * Datos de prueba de la capa UX (no quemados en steps/tasks). El actor es un
  * rol generico, no un nombre propio.
@@ -22,6 +24,11 @@ public final class UiTestData {
     /** Correo unico por corrida (principio FIRST: repetible). */
     public static String uniqueEmail() {
         return "qa.ui." + System.currentTimeMillis() + "@logistics.com";
+    }
+
+    /** Id interno (UUID) de un envio que no existe, para el camino "no encontrado". */
+    public static String unknownShipmentId() {
+        return UUID.randomUUID().toString();
     }
 
     // Datos por defecto del envio (no quemados en steps/tasks)

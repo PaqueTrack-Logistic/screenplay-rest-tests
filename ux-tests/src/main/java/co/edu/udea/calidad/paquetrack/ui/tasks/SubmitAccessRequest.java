@@ -7,42 +7,41 @@ import co.edu.udea.calidad.paquetrack.ui.userinterfaces.RegistrationPage;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.waits.WaitUntil;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 
 /**
- * Task de negocio (UI): un solicitante pide acceso diligenciando el formulario
- * de registro (correo + contrasena + confirmacion). Espera la confirmacion.
+ * Task de negocio (UI): diligencia el formulario de registro con correo,
+ * contrasena y confirmacion EXPLICITAS y lo envia, sin asumir el resultado.
+ * A diferencia de {@link RequestAccessThroughTheUI} (camino feliz, espera el
+ * exito), aqui la confirmacion puede no coincidir o el correo ya existir: sirve
+ * para los caminos de rechazo, donde la Question lee el mensaje de error.
  */
-public class RequestAccessThroughTheUI implements Task {
-
-    private static final int FEEDBACK_TIMEOUT_SECONDS = 20;
+public class SubmitAccessRequest implements Task {
 
     private final String email;
     private final String password;
+    private final String confirmation;
 
-    public RequestAccessThroughTheUI(String email, String password) {
+    public SubmitAccessRequest(String email, String password, String confirmation) {
         this.email = email;
         this.password = password;
+        this.confirmation = confirmation;
     }
 
-    public static RequestAccessThroughTheUI withCredentials(String email, String password) {
-        return instrumented(RequestAccessThroughTheUI.class, email, password);
+    public static SubmitAccessRequest with(String email, String password, String confirmation) {
+        return instrumented(SubmitAccessRequest.class, email, password, confirmation);
     }
 
     @Override
-    @Step("{0} solicita acceso con el correo #email")
+    @Step("{0} envia el formulario de registro con el correo #email")
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
                 EnterText.of(email, RegistrationPage.EMAIL_FIELD),
                 EnterText.of(password, RegistrationPage.PASSWORD_FIELD),
-                EnterText.of(password, RegistrationPage.CONFIRM_FIELD),
+                EnterText.of(confirmation, RegistrationPage.CONFIRM_FIELD),
                 Pause.toObserve(),                   // demo: ver el formulario diligenciado (configurable por UI_DELAY_MS)
-                ClickOn.the(RegistrationPage.SUBMIT_BUTTON),
-                WaitUntil.the(RegistrationPage.SUCCESS_ALERT, isVisible())
-                        .forNoMoreThan(FEEDBACK_TIMEOUT_SECONDS).seconds()
+                ClickOn.the(RegistrationPage.SUBMIT_BUTTON)
         );
     }
 }
