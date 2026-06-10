@@ -49,6 +49,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnit()
+    // Pruebas contra un sistema vivo: siempre ejecutar (nunca "up-to-date" ni cache).
+    outputs.upToDateWhen { false }
     finalizedBy aggregate
     // Propaga -D del shell (tags, URL del front, headless on/off, switches de Chrome)
     systemProperties = System.properties.findAll { k, v ->

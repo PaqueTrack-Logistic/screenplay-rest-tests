@@ -66,6 +66,9 @@ dependencies {
 
 tasks.named('test') {
     useJUnit()
+    // Las pruebas E2E corren contra un sistema vivo: nunca deben servirse desde cache
+    // ni marcarse "up-to-date". Asi `gradlew test` SIEMPRE ejecuta de verdad.
+    outputs.upToDateWhen { false }
     finalizedBy aggregate
     // Propaga -D del shell al JVM de test (filtrar por tags, cambiar baseUrl/entorno)
     systemProperties = System.properties.findAll { k, v ->
